@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(hashSet);
         animatorSet.start();
+        //
         /////////////////////////////////////////////
 
     }
