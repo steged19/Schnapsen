@@ -19,7 +19,9 @@
         android:id="@+id/sound"
         android:layout_width="60dp"
         android:layout_height="55dp"
+        android:layout_alignRight="@id/imageView"
         android:layout_marginTop="37dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/soundbuttonimage"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
