@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
         animationDrawable.start();
         ///////////////////////////////////////////////
 
-        imageView = (ImageView) findViewById(R.id.imageView);
-
+        imageView = (ImageView) findViewById(R.id.imageView);   //       <---- ImageView for the Logo "Schnapsen"
 
         /////////////Animation bei Start//////////////
         ObjectAnimator yAnimation = ObjectAnimator.ofFloat(imageView,"y",230f);
@@ -58,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         animatorSet.start();
         /////////////////////////////////////////////
 
+
+
         ///////////-----Move to the right Animation-----////////////////////
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -68,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 1000);
         /////////////////////////////////////////////////////////////////
+
+
+
+        ////////////-----Animatioon für TextView Items ( Klassisch, Blitzschnapsen, ... ) werden eingeblendet.
+
+
     }
 
 }
