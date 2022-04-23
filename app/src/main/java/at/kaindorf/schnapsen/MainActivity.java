@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoomout));
-                ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle,"y",-550f);
+                ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle,"y",-750f);
                 ObjectAnimator xAnimation = ObjectAnimator.ofFloat(ivTitle,"x",-1000f);
                 yAnimation.setDuration(1500);
                 xAnimation.setDuration(1500);
