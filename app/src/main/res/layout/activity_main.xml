@@ -19,9 +19,28 @@
         android:id="@+id/sound"
         android:layout_width="60dp"
         android:layout_height="55dp"
-        android:layout_marginLeft="650dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="645dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/soundbuttonimage"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/klassischSchnapsen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="170dp"
+        android:background="null"
+        app:srcCompat="@drawable/klassisch"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/blitzSchnapsen"
+        android:layout_width="375dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="300dp"
+        android:background="null"
+        app:srcCompat="@drawable/blitzschnapsen_"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </RelativeLayout>
