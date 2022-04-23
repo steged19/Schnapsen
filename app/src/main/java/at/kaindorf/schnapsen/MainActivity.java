@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoomout));
-                ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle,"translationY",-620f);
-                ObjectAnimator xAnimation = ObjectAnimator.ofFloat(ivTitle,"translationX",-750f);
+                ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle,"translationY",-600f);
+                ObjectAnimator xAnimation = ObjectAnimator.ofFloat(ivTitle,"translationX",-1000f);
                 yAnimation.setDuration(1500);
                 xAnimation.setDuration(1500);
                 Set<Animator> xySet = new HashSet<>();
@@ -121,15 +120,11 @@ public class MainActivity extends AppCompatActivity {
 
         ///////////////////////////////////////////////////////////
 
-        //final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.id.raw.sounds);
         ivKlassisch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent classic = new Intent(MainActivity.this, Classic.class);
                 startActivity(classic);
-
-                //mediaPlayer.start();
-
             }
         });
 
