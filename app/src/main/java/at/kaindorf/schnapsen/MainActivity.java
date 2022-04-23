@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         //////////////----BACKGROUND----///////////////
-        RelativeLayout relativeLayout = findViewById(R.id.mainLayout);
+        /*RelativeLayout relativeLayout = findViewById(R.id.mainLayout);
         AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2500);
         animationDrawable.setExitFadeDuration(5000);
-        animationDrawable.start();
+        animationDrawable.start();*/
         ///////////////////////////////////////////////
 
         ivTitle = findViewById(R.id.imageView);   //
