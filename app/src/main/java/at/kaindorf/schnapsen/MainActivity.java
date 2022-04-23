@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import java.util.Collection;
@@ -23,7 +25,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView imageView;
+    private ImageView ivTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,14 @@ public class MainActivity extends AppCompatActivity {
         animationDrawable.start();
         ///////////////////////////////////////////////
 
-        imageView = (ImageView) findViewById(R.id.imageView);
-
+        ivTitle = (ImageView) findViewById(R.id.imageView);   //       <---- ImageView for the Logo "Schnapsen"
 
         /////////////Animation bei Start//////////////
-        ObjectAnimator yAnimation = ObjectAnimator.ofFloat(imageView,"y",230f);
+        ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.bottomup));
+
+
+
+/*        ObjectAnimator yAnimation = ObjectAnimator.ofFloat(imageView,"y",230f);
         ObjectAnimator xAnimation = ObjectAnimator.ofFloat(imageView,"x",70f);
         yAnimation.setDuration(1500);
         xAnimation.setDuration(1500);
@@ -55,19 +60,36 @@ public class MainActivity extends AppCompatActivity {
         hashSet.add(xAnimation);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(hashSet);
-        animatorSet.start();
+        animatorSet.start();*/
         /////////////////////////////////////////////
+
+
 
         ///////////-----Move to the right Animation-----////////////////////
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ObjectAnimator toRight = ObjectAnimator.ofFloat(imageView,"x",2000f);
-                toRight.setDuration(700);
-                toRight.start();
+                ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoomout));
+                ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle,"y",-550f);
+                ObjectAnimator xAnimation = ObjectAnimator.ofFloat(ivTitle,"x",-1000f);
+                yAnimation.setDuration(1500);
+                xAnimation.setDuration(1500);
+                Set<Animator> xySet = new HashSet<>();
+                xySet.add(yAnimation);
+                xySet.add(xAnimation);
+                AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.playTogether(xySet);
+                animatorSet.start();
+
             }
-        }, 1000);
+        }, 4000);
         /////////////////////////////////////////////////////////////////
+
+
+
+        ////////////-----Animatioon für TextView Items ( Klassisch, Blitzschnapsen, ... ) werden eingeblendet.
+
+
     }
 
 }
