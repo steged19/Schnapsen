@@ -32,6 +32,9 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
     private ImageView ivTitle;
+    private ImageView ivBlitz;
+    private ImageView ivKlassisch;
+    private ImageView ivSound;
     private boolean soundCheck = true;
 
     @Override
@@ -51,7 +54,13 @@ public class MainActivity extends AppCompatActivity {
         animationDrawable.start();
         ///////////////////////////////////////////////
 
-        ivTitle = (ImageView) findViewById(R.id.imageView);   //       <---- ImageView for the Logo "Schnapsen"
+        ivTitle = findViewById(R.id.imageView);   //
+        ivKlassisch = findViewById(R.id.klassischSchnapsen);
+        ivBlitz = findViewById(R.id.blitzSchnapsen);
+        ivSound = findViewById(R.id.sound);
+        ivKlassisch.setVisibility(View.GONE);
+        ivBlitz.setVisibility(View.GONE);
+        ivSound.setVisibility(View.GONE);
 
         /////////////Animation bei Start//////////////
         ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.bottomup));
@@ -87,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
                 AnimatorSet animatorSet = new AnimatorSet();
                 animatorSet.playTogether(xySet);
                 animatorSet.start();
+                ivKlassisch.setVisibility(View.VISIBLE);
+                ivBlitz.setVisibility(View.VISIBLE);
+                ivSound.setVisibility(View.VISIBLE);
+                ivBlitz.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lefttoright));
+                ivKlassisch.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lefttoright));
+                ivSound.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
+
 
             }
         }, 4000);
