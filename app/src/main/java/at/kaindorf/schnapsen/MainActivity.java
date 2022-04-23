@@ -9,6 +9,7 @@ import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
@@ -32,7 +33,11 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
     private ImageView ivTitle;
+    private ImageView ivBlitz;
+    private ImageView ivKlassisch;
+    private ImageView ivSound;
     private boolean soundCheck = true;
+    private ImageButton classic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,28 +56,19 @@ public class MainActivity extends AppCompatActivity {
         animationDrawable.start();
         ///////////////////////////////////////////////
 
-        ivTitle = (ImageView) findViewById(R.id.imageView);   //       <---- ImageView for the Logo "Schnapsen"
+        ivTitle = findViewById(R.id.imageView);   //
+        ivKlassisch = findViewById(R.id.klassischSchnapsen);
+        ivBlitz = findViewById(R.id.blitzSchnapsen);
+        ivSound = findViewById(R.id.sound);
+        ivKlassisch.setVisibility(View.GONE);
+        ivBlitz.setVisibility(View.GONE);
+        ivSound.setVisibility(View.GONE);
 
         /////////////Animation bei Start//////////////
         ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.bottomup));
 
 
-
-/*        ObjectAnimator yAnimation = ObjectAnimator.ofFloat(imageView,"y",230f);
-        ObjectAnimator xAnimation = ObjectAnimator.ofFloat(imageView,"x",70f);
-        yAnimation.setDuration(1500);
-        xAnimation.setDuration(1500);
-        Set<Animator> hashSet = new HashSet<>();
-        hashSet.add(yAnimation);
-        hashSet.add(xAnimation);
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(hashSet);
-        animatorSet.start();*/
-        /////////////////////////////////////////////
-
-
-
-        ///////////-----Move to Left-----////////////////////
+        ///////////------Animation------////////////////////
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -87,14 +83,18 @@ public class MainActivity extends AppCompatActivity {
                 AnimatorSet animatorSet = new AnimatorSet();
                 animatorSet.playTogether(xySet);
                 animatorSet.start();
+                ivKlassisch.setVisibility(View.VISIBLE);
+                ivBlitz.setVisibility(View.VISIBLE);
+                ivSound.setVisibility(View.VISIBLE);
+                ivBlitz.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lefttoright));
+                ivKlassisch.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lefttoright));
+                ivSound.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
+
 
             }
         }, 4000);
+
         /////////////////////////////////////////////////////////////////
-
-
-
-        ////////////-----Animatioon für TextView Items ( Klassisch, Blitzschnapsen, ... ) werden eingeblendet.
 
 
         ImageButton sound = findViewById(R.id.sound);
@@ -117,5 +117,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        ///////////////////////////////////////////////////////////
+
+        ivKlassisch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent classic = new Intent(MainActivity.this, Classic.class);
+                startActivity(classic);
+            }
+        });
+
+        ivBlitz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent classic = new Intent(MainActivity.this, Blitz.class);
+                startActivity(classic);
+            }
+        });
+
+
     }
 }
