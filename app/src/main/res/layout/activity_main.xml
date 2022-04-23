@@ -19,8 +19,7 @@
         android:id="@+id/sound"
         android:layout_width="60dp"
         android:layout_height="55dp"
-        android:layout_marginLeft="645dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="37dp"
         android:background="@drawable/soundbuttonimage"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
@@ -29,8 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="170dp"
-        android:background="null"
+        android:layout_marginTop="160dp"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/klassisch"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -38,8 +37,8 @@
         android:id="@+id/blitzSchnapsen"
         android:layout_width="375dp"
         android:layout_height="96dp"
-        android:layout_marginTop="300dp"
-        android:background="null"
+        android:layout_marginTop="285dp"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/blitzschnapsen_"
         tools:ignore="SpeakableTextPresentCheck" />
 
