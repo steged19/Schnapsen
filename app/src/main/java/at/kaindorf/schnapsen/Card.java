@@ -1,12 +1,31 @@
 package at.kaindorf.schnapsen;
 
+import java.util.Objects;
+
 public class Card {
 
     //The class card consists of: the value of the card, the name and a boolean parameter if it is the "Trumpf".
 
     private int value;
-    private String name;
-    private boolean isTrumpf;
+    private String type;
+
+    public Card(int value, String type) {
+        this.value = value;
+        this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return value == card.value && Objects.equals(type, card.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, type);
+    }
 
     public int getValue() {
         return value;
@@ -16,19 +35,19 @@ public class Card {
         this.value = value;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public boolean isTrumpf() {
-        return isTrumpf;
-    }
-
-    public void setTrumpf(boolean trumpf) {
-        isTrumpf = trumpf;
+    @Override
+    public String toString() {
+        return "Card{" +
+                "value=" + value +
+                ", type='" + type + '\'' +
+                '}';
     }
 }
