@@ -5,17 +5,4 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@drawable/wood_background"
-tools:context=".Classic">
-
-<TextView
-    android:id="@+id/header"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="168dp"
-    android:layout_marginTop="16dp"
-    android:text="Classic Schnapsen"
-    android:textSize="48sp"
-    android:textStyle="bold"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />z
-</androidx.constraintlayout.widget.ConstraintLayout>
+tools:context=".Classic"/>
