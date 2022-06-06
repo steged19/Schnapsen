@@ -1,16 +1,49 @@
-package at.kaindorf.schnapsen;
+package at.kaindorf.schnapsen.bl;
 
 import java.util.*;
 
+import at.kaindorf.schnapsen.Card;
 
-public class Game {
+public class Deck {
 
     private List<Card> deckCards = new ArrayList<>();
     private List<Card> myCards = new ArrayList<>();
     private List<Card> opponentCards = new ArrayList<>();
     private Card trump;
 
-    public Game(){
+    public List<Card> getDeckCards() {
+        return deckCards;
+    }
+
+    public void setDeckCards(List<Card> deckCards) {
+        this.deckCards = deckCards;
+    }
+
+    public List<Card> getMyCards() {
+        return myCards;
+    }
+
+    public void setMyCards(List<Card> myCards) {
+        this.myCards = myCards;
+    }
+
+    public List<Card> getOpponentCards() {
+        return opponentCards;
+    }
+
+    public void setOpponentCards(List<Card> opponentCards) {
+        this.opponentCards = opponentCards;
+    }
+
+    public Card getTrump() {
+        return trump;
+    }
+
+    public void setTrump(Card trump) {
+        this.trump = trump;
+    }
+
+    public Deck(){
         ////////////Kartendeck wird erstellt//////////////
         String type="";
         int v;
@@ -60,8 +93,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        Game game = new Game();
-
+        Deck deck = new Deck();
     }
 
 }
