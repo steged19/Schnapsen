@@ -13,13 +13,16 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,6 +34,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+
+    MediaPlayer player1;
+    MediaPlayer playerIntro;
 
     private ImageView ivTitle;
     private ImageView ivBlitz;
@@ -47,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ///////////////////////////////////////////////
         setContentView(R.layout.activity_main);
 
+        playIntro();
 
         //////////////----BACKGROUND----///////////////
         /*RelativeLayout relativeLayout = findViewById(R.id.mainLayout);
@@ -70,8 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
         ///////////------Animation------////////////////////
         new Handler().postDelayed(new Runnable() {
+
             @Override
             public void run() {
+
+                playSong();
+
                 ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoomout));
                 ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle,"translationY",-600f);
                 ObjectAnimator xAnimation = ObjectAnimator.ofFloat(ivTitle,"translationX",-1000f);
@@ -96,46 +107,60 @@ public class MainActivity extends AppCompatActivity {
 
         /////////////////////////////////////////////////////////////////
 
+        final MediaPlayer player1 = MediaPlayer.create(this, R.raw.backgroundmusic);;
 
         ImageButton sound = findViewById(R.id.sound);
 
         sound.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 sound.setActivated(soundCheck);
 
                 soundCheck = !soundCheck;
 
-                /*if(soundCheck == true){
-                    AudioManager amanager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-                    amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, false);
+                if(soundCheck == true){
+                    player1.pause();
                 }
                 else{
-                    AudioManager amanager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-                    amanager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
-                }*/
-
+                    player1.pause();
+                }
             }
         });
 
         ///////////////////////////////////////////////////////////
 
+        final MediaPlayer playerKlassisch = MediaPlayer.create(this, R.raw.klassisch);
         ivKlassisch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent classic = new Intent(MainActivity.this, Classic.class);
                 startActivity(classic);
+                playerKlassisch.start();
             }
         });
 
+        final MediaPlayer playerBlitz = MediaPlayer.create(this, R.raw.blitzschnapsen);
         ivBlitz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                playerBlitz.start();
+
                 Intent classic = new Intent(MainActivity.this, Blitz.class);
                 startActivity(classic);
             }
         });
-
-
     }
+    //R.raw.backgroundmusic
+    public void playSong(){
+        player1 = MediaPlayer.create(this, R.raw.backgroundmusic);
+        player1.start();
+    }
+
+    //R.raw.introsound
+    public void playIntro(){
+        playerIntro = MediaPlayer.create(this, R.raw.introsound);
+        playerIntro.start();
+    }
+
 }
