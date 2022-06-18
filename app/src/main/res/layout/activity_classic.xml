@@ -78,7 +78,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/oponnentCard1"
             app:srcCompat="@drawable/boyentity"/>
+
     <ImageView
+        android:foreground="@drawable/effectcardclick"
+        android:clickable="true"
         android:id="@+id/myCard1"
         android:layout_width="83dp"
         android:layout_height="130dp"
@@ -86,9 +89,12 @@
         android:layout_marginTop="228dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:text="*"
         app:srcCompat="@drawable/herzdame" />
 
     <ImageView
+        android:foreground="@drawable/effectcardclick"
+        android:clickable="true"
         android:id="@+id/myCard2"
         android:layout_width="83dp"
         android:layout_height="130dp"
@@ -99,6 +105,8 @@
         app:srcCompat="@drawable/kreuzkoenig" />
 
     <ImageView
+        android:foreground="@drawable/effectcardclick"
+        android:clickable="true"
         android:id="@+id/myCard3"
         android:layout_width="83dp"
         android:layout_height="130dp"
@@ -109,6 +117,8 @@
         app:srcCompat="@drawable/piczehner" />
 
     <ImageView
+        android:foreground="@drawable/effectcardclick"
+        android:clickable="true"
         android:id="@+id/myCard4"
         android:layout_width="83dp"
         android:layout_height="130dp"
@@ -119,6 +129,8 @@
         app:srcCompat="@drawable/kreuzbube" />
 
     <ImageView
+        android:foreground="@drawable/effectcardclick"
+        android:clickable="true"
         android:id="@+id/myCard5"
         android:layout_width="83dp"
         android:layout_height="130dp"
