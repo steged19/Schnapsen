@@ -8,8 +8,8 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -25,6 +25,15 @@ public class Classic extends AppCompatActivity {
     private ImageView card3;
     private ImageView card4;
     private ImageView card5;
+
+    private ImageView trumpCard;
+
+    private ImageView opCard1;
+    private ImageView opCard2;
+    private ImageView opCard3;
+    private ImageView opCard4;
+    private ImageView opCard5;
+
     private List<Card> deckCards = new ArrayList<>();
     private List<Card> myCards = new ArrayList<>();
     private List<Card> opponentCards = new ArrayList<>();
@@ -37,8 +46,6 @@ public class Classic extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classic);
-
-
 
         ///Deck wird erstellt
         //Deck deck = new Deck();
@@ -64,13 +71,20 @@ public class Classic extends AppCompatActivity {
         trump = handTrump();               //Trumpf wird bestimmt
         System.out.println(trump);
 
-
-
         card1 = findViewById(R.id.myCard1);
         card2 = findViewById(R.id.myCard2);
         card3 = findViewById(R.id.myCard3);
         card4 = findViewById(R.id.myCard4);
         card5 = findViewById(R.id.myCard5);
+
+        trumpCard = findViewById(R.id.trumpCard);
+
+        opCard1 = findViewById(R.id.oponnentCard1);
+        opCard2 = findViewById(R.id.oponnentCard2);
+        opCard3 = findViewById(R.id.oponnentCard3);
+        opCard4 = findViewById(R.id.oponnentCard4);
+        opCard5 = findViewById(R.id.oponnentCard5);
+
 
         assignImages(myCards.get(0), card1);
         card1.setTag(myCards.get(0));
@@ -83,7 +97,35 @@ public class Classic extends AppCompatActivity {
         assignImages(myCards.get(4), card5);
         card1.setTag(myCards.get(4));
 
+        ////////////////////////AUSTEIL ANIMATION///////////////////////////
 
+        handOutAnimation(card1, -2100, 600, 0);
+        handOutAnimation(card2, -1775, 600, 200);
+        handOutAnimation(card3, -1450, 600, 400);
+
+        //WARTE EINE SEKUNDE
+
+        handOutAnimation(opCard1,-2100, -500, 1000);
+        handOutAnimation(opCard2,-1775, -500, 1200);
+        handOutAnimation(opCard3,-1450, -500, 1400);
+
+        //WARTE EINE SEKUNDE
+
+        handOutAnimation(trumpCard, -200, 30, 2000);
+
+        trumpCard.animate().rotation(90f).setDuration(1000).setStartDelay(2000).start();
+
+        //WARTE EINE SEKUNDE
+
+        handOutAnimation(card4, -1125, 600, 3500);
+        handOutAnimation(card5, -800, 600, 3700);
+
+        //WARTE EINE SEKUNDE
+
+        handOutAnimation(opCard4,-1125, -500, 4500);
+        handOutAnimation(opCard5,-800, -500, 4700);
+
+        ////////////////////////////////////////////////////////////////////
 
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +133,7 @@ public class Classic extends AppCompatActivity {
                 card1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        cardAnimation(card1, 0);
+                        handOutAnimation(card1, -1000, 60, 0);
                     }
                 });
             }
@@ -103,7 +145,7 @@ public class Classic extends AppCompatActivity {
                 card2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        cardAnimation(card2, -320);
+                        handOutAnimation(card2, -1000, 60, 0);
                     }
                 });
             }
@@ -115,7 +157,7 @@ public class Classic extends AppCompatActivity {
                 card3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        cardAnimation(card3, -630);
+                        handOutAnimation(card3, -1000, 60, 0);
                     }
                 });
             }
@@ -127,7 +169,7 @@ public class Classic extends AppCompatActivity {
                 card4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        cardAnimation(card4, -938);
+                        handOutAnimation(card4, -1000, 60, 0);
                     }
                 });
             }
@@ -139,7 +181,7 @@ public class Classic extends AppCompatActivity {
                 card5.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        cardAnimation(card5, -1247);
+                        handOutAnimation(card5, -1000, 60, 0);
                     }
                 });
             }
@@ -199,15 +241,17 @@ public class Classic extends AppCompatActivity {
                 break;
             default: break;
         }
-
     }
 
-    public void cardAnimation(View view, int number){
-        ObjectAnimator yAnimation = ObjectAnimator.ofFloat(view,"translationY",-517f);
-        ObjectAnimator xAnimation = ObjectAnimator.ofFloat(view,"translationX",1070f + number);
+    //FUNKTION FÜR ANIMATION FÜRS AUSTEILEN
 
-        yAnimation.setDuration(1500);
-        xAnimation.setDuration(1500);
+    public void handOutAnimation(View view, int numberX, int numberY, int delay){
+
+        ObjectAnimator xAnimation = ObjectAnimator.ofFloat(view,"translationX", numberX);
+        ObjectAnimator yAnimation = ObjectAnimator.ofFloat(view,"translationY", numberY);
+
+        yAnimation.setDuration(1500).setStartDelay(delay);
+        xAnimation.setDuration(1500).setStartDelay(delay);
 
         Set<Animator> xySet = new HashSet<>();
         xySet.add(yAnimation);
@@ -215,9 +259,9 @@ public class Classic extends AppCompatActivity {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(xySet);
+
         animatorSet.start();
     }
-
 }
 
 
