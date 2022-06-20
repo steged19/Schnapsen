@@ -8,6 +8,30 @@
     tools:context=".Classic">
 
     <ImageView
+        android:id="@+id/myCardStack"
+        android:layout_width="83dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="561dp"
+        android:layout_marginTop="256dp"
+        android:rotation="-30"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/opCardStack"
+        android:layout_width="83dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="548dp"
+        android:layout_marginTop="-31dp"
+        android:rotation="30"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
         android:id="@+id/dawgme"
         android:layout_width="36dp"
         android:layout_height="38dp"
@@ -57,9 +81,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/pointsEntity"
-        android:layout_width="14dp"
-        android:layout_height="24dp"
+        android:id="@+id/opPoints"
+        android:layout_width="29dp"
+        android:layout_height="19dp"
         android:layout_marginStart="108dp"
         android:layout_marginTop="144dp"
         android:fontFamily="sans-serif-black"
@@ -71,9 +95,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/pointsEntity2"
-        android:layout_width="14dp"
-        android:layout_height="24dp"
+        android:id="@+id/myPoints"
+        android:layout_width="28dp"
+        android:layout_height="18dp"
         android:layout_marginStart="108dp"
         android:layout_marginTop="188dp"
         android:fontFamily="sans-serif-black"
@@ -206,6 +230,57 @@
         android:layout_height="130dp"
         android:layout_marginStart="172dp"
         android:layout_marginTop="116dp"
+        app:layout_constraintStart_toEndOf="@+id/myCard5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/overlapCard1"
+        android:layout_width="83dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="676dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintStart_toEndOf="@+id/myCard5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/overlapCard2"
+        android:layout_width="83dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="676dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintStart_toEndOf="@+id/myCard5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/overlapCard3"
+        android:layout_width="83dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="676dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintStart_toEndOf="@+id/myCard5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/overlapCard4"
+        android:layout_width="83dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="676dp"
+        android:layout_marginTop="112dp"
+        app:layout_constraintStart_toEndOf="@+id/myCard5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/overlapCard5"
+        android:layout_width="83dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="676dp"
+        android:layout_marginTop="112dp"
+        android:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/myCard5"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back" />
