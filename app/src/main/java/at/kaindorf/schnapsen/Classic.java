@@ -41,6 +41,9 @@ public class Classic extends AppCompatActivity {
     private List<Card> opponentCards = new ArrayList<>();
     private Card trump;
 
+    private Random random = new Random();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -104,11 +107,11 @@ public class Classic extends AppCompatActivity {
         assignImages(myCards.get(3), card4);
         assignImages(myCards.get(4), card5);
 
-        assignImages(opponentCards.get(0), opCard1);
-        assignImages(opponentCards.get(1), opCard2);
-        assignImages(opponentCards.get(2), opCard3);
-        assignImages(opponentCards.get(3), opCard4);
-        assignImages(opponentCards.get(4), opCard5);
+        //assignImages(opponentCards.get(0), opCard1);
+        //assignImages(opponentCards.get(1), opCard2);
+        //assignImages(opponentCards.get(2), opCard3);
+        //assignImages(opponentCards.get(3), opCard4);
+        //assignImages(opponentCards.get(4), opCard5);
 
         //Tag setten
         card1.setTag(myCards.get(0));
@@ -182,17 +185,17 @@ public class Classic extends AppCompatActivity {
         //WENN KARTE KLEINER ALS OPONENT CARD
 
 
-
-        if(cardValue.getValue() < oppCardValue.getValue()){
-            handOutAnimation(card, -400, 500, 2500);
-            System.out.println();
-            card.animate().rotation(150f).setDuration(1500).setStartDelay(2500).start();
-        }
-        //WENN KARTE GRÖßER ALS OPONENT CARD
-        else{
-            handOutAnimation(card, -450, -500, 2500);
-            card.animate().rotation(210f).setDuration(1500).setStartDelay(2500).start();
-        }
+            if(cardValue.getType() == oppCardValue.getType() && cardValue.getValue() < oppCardValue.getValue()){
+                handOutAnimation(card, -400, 500, 2500);
+                System.out.println(oppCardValue + "wins");
+                card.animate().rotation(150f).setDuration(1500).setStartDelay(2500).start();
+            }
+            //WENN KARTE GRÖßER ALS OPONENT CARD
+            else{
+                System.out.println(oppCardValue + "loses");
+                handOutAnimation(card, -450, -500, 2500);
+                card.animate().rotation(210f).setDuration(1500).setStartDelay(2500).start();
+            }
 
 
     }
@@ -271,24 +274,23 @@ public class Classic extends AppCompatActivity {
         animatorSet.start();
     }
     public Card randOppCard(String type){
-        List<Card> oppCardsType = new ArrayList<>();
-        for (Card cardvalue:opponentCards) {
-            if (cardvalue.getType() == type){
-                oppCardsType.add(cardvalue);
+        List<Card> opponentCardsSameType = new ArrayList<>();
+
+        for (Card card:opponentCards) {
+            if (card.getType() == type){
+                opponentCardsSameType.add(card);
             }
         }
-        if (oppCardsType.size() == 0){
-            return null;
+
+        if (opponentCardsSameType == null){
+            int cardNumber = random.nextInt(opponentCards.size()) + 1;
+            return opponentCards.get(cardNumber);
         }
 
-        Random random = new Random();
-        int cardNumber = random.nextInt(oppCardsType.size()) + 1;
-        Card cardValue = oppCardsType.get(cardNumber);
+        int cardNumber = random.nextInt(opponentCardsSameType.size()) + 1;
+        Card cardValue = opponentCardsSameType.get(cardNumber);
         return cardValue;
     }
-
-
-
 }
 
 
