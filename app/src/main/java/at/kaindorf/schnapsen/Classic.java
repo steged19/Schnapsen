@@ -60,6 +60,14 @@ public class Classic extends AppCompatActivity {
             }
             for (int j = 0; j < 5; j++) {
                 v = j+1;
+                switch (j){
+                case 0: v=2; break;
+                case 1: v=3; break;
+                case 2: v=4; break;
+                case 3: v=10; break;
+                case 4: v=11; break;
+                }
+
                 deckCards.add(new Card(v,type));
             }
         }
@@ -89,13 +97,13 @@ public class Classic extends AppCompatActivity {
         assignImages(myCards.get(0), card1);
         card1.setTag(myCards.get(0));
         assignImages(myCards.get(1), card2);
-        card1.setTag(myCards.get(1));
+        card2.setTag(myCards.get(1));
         assignImages(myCards.get(2), card3);
-        card1.setTag(myCards.get(2));
+        card3.setTag(myCards.get(2));
         assignImages(myCards.get(3), card4);
-        card1.setTag(myCards.get(3));
+        card4.setTag(myCards.get(3));
         assignImages(myCards.get(4), card5);
-        card1.setTag(myCards.get(4));
+        card5.setTag(myCards.get(4));
 
         ////////////////////////AUSTEIL ANIMATION///////////////////////////
 
@@ -127,65 +135,39 @@ public class Classic extends AppCompatActivity {
 
         ////////////////////////////////////////////////////////////////////
 
-        card1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                card1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        handOutAnimation(card1, -1000, 60, 0);
-                    }
-                });
-            }
-        });
+        card1.setOnClickListener(view -> cardClicked(card1));
 
-        card2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                card2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        handOutAnimation(card2, -1000, 60, 0);
-                    }
-                });
-            }
-        });
+        card2.setOnClickListener(view -> cardClicked(card2));
 
-        card3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                card3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        handOutAnimation(card3, -1000, 60, 0);
-                    }
-                });
-            }
-        });
+        card3.setOnClickListener(view -> cardClicked(card3));
 
-        card4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                card4.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        handOutAnimation(card4, -1000, 60, 0);
-                    }
-                });
-            }
-        });
+        card4.setOnClickListener(view -> cardClicked(card4));
 
-        card5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                card5.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        handOutAnimation(card5, -1000, 60, 0);
-                    }
-                });
-            }
-        });
+        card5.setOnClickListener(view -> cardClicked(card5));
+
+    }
+
+    public void cardClicked(ImageView card){
+
+        card1.setClickable(false);
+        card2.setClickable(false);
+        card3.setClickable(false);
+        card4.setClickable(false);
+        card5.setClickable(false);
+
+
+        Card cardValue = (Card) card.getTag();
+        System.out.println(cardValue);
+        handOutAnimation(card, -1000, 60, 0);
+
+        if(cardValue.getValue() < 10){
+            handOutAnimation(card, 100, 300, 2500);
+        }
+
+        if(cardValue.getValue() > 10){
+            handOutAnimation(card, 800, -500, 2500);
+        }
+
 
     }
 
@@ -205,38 +187,38 @@ public class Classic extends AppCompatActivity {
         switch (card.getType()){
             case "Heart" :
                 switch (card.getValue()){
-                    case 1: imageView.setImageResource(R.drawable.herzbube); break;
-                    case 2: imageView.setImageResource(R.drawable.herzdame); break;
-                    case 3: imageView.setImageResource(R.drawable.herzkoenig); break;
-                    case 4: imageView.setImageResource(R.drawable.herzzehner); break;
-                    case 5: imageView.setImageResource(R.drawable.herzass); break;
+                    case 2: imageView.setImageResource(R.drawable.herzbube); break;
+                    case 3: imageView.setImageResource(R.drawable.herzdame); break;
+                    case 4: imageView.setImageResource(R.drawable.herzkoenig); break;
+                    case 10: imageView.setImageResource(R.drawable.herzzehner); break;
+                    case 11: imageView.setImageResource(R.drawable.herzass); break;
                 }
                 break;
             case "Acorn" :
                 switch (card.getValue()){
-                    case 1: imageView.setImageResource(R.drawable.kreuzbube); break;
-                    case 2: imageView.setImageResource(R.drawable.kreuzdame); break;
-                    case 3: imageView.setImageResource(R.drawable.kreuzkoenig); break;
-                    case 4: imageView.setImageResource(R.drawable.kreuzzehner); break;
-                    case 5: imageView.setImageResource(R.drawable.kreuzass); break;
+                    case 2: imageView.setImageResource(R.drawable.kreuzbube); break;
+                    case 3: imageView.setImageResource(R.drawable.kreuzdame); break;
+                    case 4: imageView.setImageResource(R.drawable.kreuzkoenig); break;
+                    case 10: imageView.setImageResource(R.drawable.kreuzzehner); break;
+                    case 11: imageView.setImageResource(R.drawable.kreuzass); break;
                 }
                 break;
             case "Leave" :
                 switch (card.getValue()){
-                    case 1: imageView.setImageResource(R.drawable.picbube); break;
-                    case 2: imageView.setImageResource(R.drawable.picdame); break;
-                    case 3: imageView.setImageResource(R.drawable.pickoenig); break;
-                    case 4: imageView.setImageResource(R.drawable.piczehner); break;
-                    case 5: imageView.setImageResource(R.drawable.picass); break;
+                    case 2: imageView.setImageResource(R.drawable.picbube); break;
+                    case 3: imageView.setImageResource(R.drawable.picdame); break;
+                    case 4: imageView.setImageResource(R.drawable.pickoenig); break;
+                    case 10: imageView.setImageResource(R.drawable.piczehner); break;
+                    case 11: imageView.setImageResource(R.drawable.picass); break;
                 }
                 break;
             case "Bell" :
                 switch (card.getValue()){
-                    case 1: imageView.setImageResource(R.drawable.karobube); break;
-                    case 2: imageView.setImageResource(R.drawable.karodame); break;
-                    case 3: imageView.setImageResource(R.drawable.karokoenig); break;
-                    case 4: imageView.setImageResource(R.drawable.karozehner); break;
-                    case 5: imageView.setImageResource(R.drawable.karoass); break;
+                    case 2: imageView.setImageResource(R.drawable.karobube); break;
+                    case 3: imageView.setImageResource(R.drawable.karodame); break;
+                    case 4: imageView.setImageResource(R.drawable.karokoenig); break;
+                    case 10: imageView.setImageResource(R.drawable.karozehner); break;
+                    case 11: imageView.setImageResource(R.drawable.karoass); break;
                 }
                 break;
             default: break;
