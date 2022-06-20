@@ -35,14 +35,12 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    MediaPlayer player1;
     MediaPlayer playerIntro;
-
+    MediaPlayer player1;
     private ImageView ivTitle;
     private ImageView ivBlitz;
     private ImageView ivKlassisch;
     private ImageView ivSound;
-    private boolean soundCheck = true;
     private ImageButton classic;
 
     @Override
@@ -74,18 +72,15 @@ public class MainActivity extends AppCompatActivity {
         /////////////Animation bei Start//////////////
         ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.bottomup));
 
-
         ///////////------Animation------////////////////////
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
 
-                playSong();
-
                 ivTitle.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoomout));
-                ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle,"translationY",-600f);
-                ObjectAnimator xAnimation = ObjectAnimator.ofFloat(ivTitle,"translationX",-1000f);
+                ObjectAnimator yAnimation = ObjectAnimator.ofFloat(ivTitle, "translationY", -600f);
+                ObjectAnimator xAnimation = ObjectAnimator.ofFloat(ivTitle, "translationX", -1000f);
                 yAnimation.setDuration(1500);
                 xAnimation.setDuration(1500);
                 Set<Animator> xySet = new HashSet<>();
@@ -101,29 +96,36 @@ public class MainActivity extends AppCompatActivity {
                 ivKlassisch.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lefttoright));
                 ivSound.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadein));
 
-
             }
         }, 4000);
 
         /////////////////////////////////////////////////////////////////
 
-        final MediaPlayer player1 = MediaPlayer.create(this, R.raw.backgroundmusic);;
-
         ImageButton sound = findViewById(R.id.sound);
 
+        player1 = MediaPlayer.create(this, R.raw.backgroundmusic);
+        player1.start();
+
         sound.setOnClickListener(new View.OnClickListener() {
+
+            boolean soundCheck = true;
+
             @Override
             public void onClick(View view) {
 
                 sound.setActivated(soundCheck);
 
+                player1.start();
+
                 soundCheck = !soundCheck;
 
-                if(soundCheck == true){
+                if (soundCheck == true) {
+                    System.out.println("SOUND AN");
+                    player1.start();
+                } else {
+                    System.out.println("SOUND AUS");
                     player1.pause();
-                }
-                else{
-                    player1.pause();
+
                 }
             }
         });
@@ -150,11 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(classic);
             }
         });
-    }
-    //R.raw.backgroundmusic
-    public void playSong(){
-        player1 = MediaPlayer.create(this, R.raw.backgroundmusic);
-        player1.start();
     }
 
     //R.raw.introsound
