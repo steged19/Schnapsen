@@ -223,6 +223,23 @@ public class Classic extends AppCompatActivity {
         ImageView oppCard =  randOppCard(cardValue.getType());
         Card oppCardValue = (Card) oppCard.getTag();
 
+
+        //myCards           - cardValue
+        //oponnentCards     - oppCardValue
+
+        //cardValue.getValue();
+
+        int oppValue = oppCardValue.getValue();
+        int myValue = cardValue.getValue();
+
+        if(cardValue.getType().equals(trump.getType())){
+            System.out.println("DES WOA MEI TRUMP OIDA");
+        }
+
+        if(oppCardValue.getType().equals(trump.getType())){
+            System.out.println("DES WOA DA GEGNAS TRUMPF OIDA");
+        }
+
         //WENN KARTE KLEINER ALS OPONENT CARD
                 if(cardValue.getValue() < oppCardValue.getValue() && cardValue.getType() == oppCardValue.getType()){
                     handOutAnimation(card, -450, -500, 3500);
@@ -302,7 +319,7 @@ public class Classic extends AppCompatActivity {
                 switch (card.getValue()){
                     case 2: imageView.setImageResource(R.drawable.herzbube); break;
                     case 3: imageView.setImageResource(R.drawable.herzdame); break;
-                    case 4: imageView.setImageResource(R.drawable.herzbube); break;
+                    case 4: imageView.setImageResource(R.drawable.herzkoenig); break;
                     case 10: imageView.setImageResource(R.drawable.herzzehner); break;
                     case 11: imageView.setImageResource(R.drawable.herzass); break;
                 }
