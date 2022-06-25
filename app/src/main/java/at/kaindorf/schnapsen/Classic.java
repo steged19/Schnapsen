@@ -43,10 +43,15 @@ public class Classic extends AppCompatActivity {
 
     private int myPointsCNT = 0;
     private int opPointsCNT = 0;
+    private int verschiebungMyCard;
+    private int verschiebungOppCard;
+    private boolean deckNotEmpty = true;
 
+    private ImageView stackCard1;
+    private ImageView stackCard2;
+    private ImageView stackCard3;
 
     final Handler handler = new Handler();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +118,14 @@ public class Classic extends AppCompatActivity {
         ivMyCards[3] = findViewById(R.id.myCard4);
         ivMyCards[4] = findViewById(R.id.myCard5);
 
+        stackCard1 = findViewById(R.id.stackCard1);
+        stackCard2 = findViewById(R.id.stackCard2);
+        stackCard3 = findViewById(R.id.stackCard3);
+
+        stackCard1.setZ(12f);
+        stackCard2.setZ(12f);
+        stackCard3.setZ(12f);
+
         trumpCard = findViewById(R.id.trumpCard);
 
         ivOpCards[0] = findViewById(R.id.oponnentCard1);
@@ -134,7 +147,7 @@ public class Classic extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             assignImages(myCards.get(i), ivMyCards[i]);
             ivMyCards[i].setTag(myCards.get(i));
-            ivMyCards[i].setZ(9f);
+            ivMyCards[i].setZ(11f);
 
             ivOpCards[i].setTag(opponentCards.get(i));
         }
@@ -228,7 +241,7 @@ public class Classic extends AppCompatActivity {
         opponentCards.remove(oppCardValue);
         myCards.remove(cardValue);
 
-        setCardsClickable(true, 9000);
+        setCardsClickable(true, 8000);
     }
 
 
@@ -509,7 +522,6 @@ public class Classic extends AppCompatActivity {
         myCard.postDelayed(new Runnable() {
             @Override
             public void run() {
-                myCard.animate().rotation(0).setDuration(0).start();
                 myCard.setVisibility(View.INVISIBLE);
             }
         }, 5000);
@@ -517,19 +529,18 @@ public class Classic extends AppCompatActivity {
         opCard.postDelayed(new Runnable() {
             @Override
             public void run() {
-                opCard.animate().rotation(0).setDuration(0).start();
                 opCard.setVisibility(View.INVISIBLE);
             }
         }, 5000);
-
-        backToPosition(myCard, opCard, cardNumber, oppCardNumber);
+        if (deckNotEmpty) backToPosition(myCard, opCard, cardNumber, oppCardNumber);
 
     }
 
+
     public void backToPosition(ImageView myCard, ImageView opCard, int myCardNumber, int oppCardNumber){
 
-        int verschiebungMyCard = 0;
-        int verschiebungOppCard = 0;
+         verschiebungMyCard = 0;
+         verschiebungOppCard = 0;
 
         switch(myCardNumber){
             case 0: verschiebungMyCard = -2320; break;
@@ -547,36 +558,52 @@ public class Classic extends AppCompatActivity {
             case 4: verschiebungOppCard = -1020; break;
         }
 
-        handOutAnimation(myCard, verschiebungMyCard, 560, 8500);
-        handOutAnimation(opCard, verschiebungOppCard, -536, 8500);
 
-        myCard.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                myCard.setVisibility(View.VISIBLE);
-                Card nextCard = deckCards.get(0);
-                handOut(myCards, 1);
-                assignImages(nextCard, ivMyCards[myCardNumber]);
-                ivMyCards[myCardNumber].setTag(nextCard);
-            }
-        }, 8500);
 
-        opCard.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                opCard.setVisibility(View.VISIBLE);
-                Card nextCard = deckCards.get(0);
-                try {
-                    handOut(opponentCards,1);
+
+            myCard.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (deckCards.size() != 0) {
+                    System.out.println(deckCards.size());
+                    myCard.setVisibility(View.VISIBLE);
+                    handOutAnimation(myCard, verschiebungMyCard, 560, 0);
+                    myCard.animate().rotation(0).setDuration(1000).setStartDelay(0).start();
+
+                    Card nextCard = deckCards.get(0);
+                    handOut(myCards, 1);
+                    assignImages(nextCard, ivMyCards[myCardNumber]);
+                    ivMyCards[myCardNumber].setTag(nextCard);
+                    }
                 }
-                catch (IndexOutOfBoundsException e){
-                    e.printStackTrace();
+            }, 6000);
+            opCard.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (deckCards.size() != 0) {
+                        System.out.println(deckCards.size());
+                        opCard.setVisibility(View.VISIBLE);
+                        opCard.animate().rotation(0).setDuration(1000).setStartDelay(0).start();
+                        handOutAnimation(opCard, verschiebungOppCard, -536, 0);
+                        Card nextCard = deckCards.get(0);
+                        handOut(opponentCards, 1);
+                        ivOpCards[oppCardNumber].setImageResource(R.drawable.back);
+                        //assignImages(nextCard, ivOpCards[oppCardNumber]);
+                        ivOpCards[oppCardNumber].setTag(nextCard);
+                    }
+                    else{
+                        deckNotEmpty = false;
+                        stackCard1.setVisibility(View.INVISIBLE);
+                        stackCard2.setVisibility(View.INVISIBLE);
+                        stackCard3.setVisibility(View.INVISIBLE);
+                        assignImages(trump ,opCard);
+                        //trumpCard.setVisibility(View.INVISIBLE);
+                        opCard.animate().rotation(90).setDuration(0).setStartDelay(0).start();
+                        opCard.setVisibility(View.VISIBLE);
+                    }
                 }
-                ivOpCards[oppCardNumber].setImageResource(R.drawable.back);
-                //assignImages(nextCard, ivOpCards[oppCardNumber]);
-                ivOpCards[oppCardNumber].setTag(nextCard);
-            }
-        }, 8500);
+            }, 6000);
+
     }
 
 }
