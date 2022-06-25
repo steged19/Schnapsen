@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -241,7 +242,7 @@ public class Classic extends AppCompatActivity {
         opponentCards.remove(oppCardValue);
         myCards.remove(cardValue);
 
-        setCardsClickable(true, 8000);
+        setCardsClickable(true, 0);
     }
 
 
@@ -441,10 +442,12 @@ public class Classic extends AppCompatActivity {
     public boolean checkIfWin() {
         if (myPointsCNT >= 66) {
             System.out.println("Ich gewinne");
+            openWinScreen();
             return true;
         }
         if (opPointsCNT >= 66) {
             System.out.println("Gegner gewinnt");
+            openLossScreen();
             return true;
         }
         return false;
@@ -558,9 +561,6 @@ public class Classic extends AppCompatActivity {
             case 4: verschiebungOppCard = -1020; break;
         }
 
-
-
-
             myCard.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -596,14 +596,34 @@ public class Classic extends AppCompatActivity {
                         stackCard1.setVisibility(View.INVISIBLE);
                         stackCard2.setVisibility(View.INVISIBLE);
                         stackCard3.setVisibility(View.INVISIBLE);
+
                         assignImages(trump ,opCard);
-                        //trumpCard.setVisibility(View.INVISIBLE);
-                        opCard.animate().rotation(90).setDuration(0).setStartDelay(0).start();
-                        opCard.setVisibility(View.VISIBLE);
+
+                        handOutAnimation(opCard, -223, 30, 0);
+                        opCard.animate().rotation(90f).setDuration(0).setStartDelay(0).start();
+
+                        opCard.animate().rotation(90f).setDuration(1500).setStartDelay(3000).start();
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                opCard.setVisibility(View.VISIBLE);
+                                trumpCard.setVisibility(View.INVISIBLE);
+                                handOutAnimation(opCard, verschiebungOppCard, -536, 0);
+                            }
+                        }, 1500);
                     }
                 }
             }, 6000);
-
     }
 
+    public void openWinScreen(){
+        Intent intent = new Intent(this, winScreen.class);
+        startActivity(intent);
+    }
+
+    public void openLossScreen(){
+        Intent intent = new Intent(this, lossActivity.class);
+        startActivity(intent);
+    }
 }
