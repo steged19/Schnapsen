@@ -193,10 +193,11 @@ public class Classic extends AppCompatActivity {
 
         setCardsClickable(false, 0);
 
-
         Card cardValue = (Card) card.getTag();
         ImageView oppCard = randOppCard(cardValue.getType());
         Card oppCardValue = (Card) oppCard.getTag();
+
+        int oppCardNumber = (int) oppCard.getZ();
 
         handOutAnimation(card, -1000, 20, 0);
 
@@ -219,7 +220,7 @@ public class Classic extends AppCompatActivity {
         }
 
         if (checkIfWin() == false) {
-            handoutNewCard();
+            handoutNewCard(card, oppCard, cardNumber, oppCardNumber);
         } else {
             checkIfWin();
         }
@@ -227,7 +228,7 @@ public class Classic extends AppCompatActivity {
         opponentCards.remove(oppCardValue);
         myCards.remove(cardValue);
 
-        setCardsClickable(true, 6000);
+        setCardsClickable(true, 9000);
     }
 
 
@@ -349,8 +350,6 @@ public class Classic extends AppCompatActivity {
     }
 
     public ImageView randOppCard(String type) {
-
-
         List<Card> opponentCardsSameType = new ArrayList<>();
         for (Card card:opponentCards) {
             if (card.getType() == type){
@@ -377,6 +376,7 @@ public class Classic extends AppCompatActivity {
                 }
             }, 1500);
             opCard = ivOpCards[0];
+            opCard.setZ(0);
         }
         if (cardValue == (Card) ivOpCards[1].getTag()) {
             ivOpCards[1].postDelayed(new Runnable() {
@@ -387,6 +387,7 @@ public class Classic extends AppCompatActivity {
                 }
             }, 1500);
             opCard = ivOpCards[1];
+            opCard.setZ(1);
         }
         if (cardValue == (Card) ivOpCards[2].getTag()) {
             ivOpCards[2].postDelayed(new Runnable() {
@@ -397,6 +398,7 @@ public class Classic extends AppCompatActivity {
                 }
             }, 1500);
             opCard = ivOpCards[2];
+            opCard.setZ(2);
         }
         if (cardValue == (Card) ivOpCards[3].getTag()) {
             ivOpCards[3].postDelayed(new Runnable() {
@@ -407,6 +409,7 @@ public class Classic extends AppCompatActivity {
                 }
             }, 1500);
             opCard = ivOpCards[3];
+            opCard.setZ(3);
         }
         if (cardValue == (Card) ivOpCards[4].getTag()) {
             ivOpCards[4].postDelayed(new Runnable() {
@@ -417,6 +420,7 @@ public class Classic extends AppCompatActivity {
                 }
             }, 1500);
             opCard = ivOpCards[4];
+            opCard.setZ(4);
         }
         return opCard;
     }
@@ -431,9 +435,6 @@ public class Classic extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-    public void handoutNewCard() {
     }
 
     private void setCardsClickable(boolean clickable, int delay) {
@@ -498,4 +499,84 @@ public class Classic extends AppCompatActivity {
             }
         }, 3000);
     }
+
+    public void handoutNewCard(ImageView myCard, ImageView opCard, int cardNumber, int oppCardNumber){
+
+        //BACK TO STACK - > UNSICHTBAR
+        handOutAnimation(myCard, 0, 0, 5000);
+        handOutAnimation(opCard, 0, 0, 5000);
+
+        myCard.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myCard.animate().rotation(0).setDuration(0).start();
+                myCard.setVisibility(View.INVISIBLE);
+            }
+        }, 5000);
+
+        opCard.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                opCard.animate().rotation(0).setDuration(0).start();
+                opCard.setVisibility(View.INVISIBLE);
+            }
+        }, 5000);
+
+        backToPosition(myCard, opCard, cardNumber, oppCardNumber);
+
+    }
+
+    public void backToPosition(ImageView myCard, ImageView opCard, int myCardNumber, int oppCardNumber){
+
+        int verschiebungMyCard = 0;
+        int verschiebungOppCard = 0;
+
+        switch(myCardNumber){
+            case 0: verschiebungMyCard = -2320; break;
+            case 1: verschiebungMyCard = -1995; break;
+            case 2: verschiebungMyCard = -1670; break;
+            case 3: verschiebungMyCard = -1345; break;
+            case 4: verschiebungMyCard = -1020; break;
+        }
+
+        switch(oppCardNumber){
+            case 0: verschiebungOppCard = -2320; break;
+            case 1: verschiebungOppCard = -1995; break;
+            case 2: verschiebungOppCard = -1670; break;
+            case 3: verschiebungOppCard = -1345; break;
+            case 4: verschiebungOppCard = -1020; break;
+        }
+
+        handOutAnimation(myCard, verschiebungMyCard, 560, 8500);
+        handOutAnimation(opCard, verschiebungOppCard, -536, 8500);
+
+        myCard.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myCard.setVisibility(View.VISIBLE);
+                Card nextCard = deckCards.get(0);
+                handOut(myCards, 1);
+                assignImages(nextCard, ivMyCards[myCardNumber]);
+                ivMyCards[myCardNumber].setTag(nextCard);
+            }
+        }, 8500);
+
+        opCard.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                opCard.setVisibility(View.VISIBLE);
+                Card nextCard = deckCards.get(0);
+                try {
+                    handOut(opponentCards,1);
+                }
+                catch (IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                }
+                ivOpCards[oppCardNumber].setImageResource(R.drawable.back);
+                //assignImages(nextCard, ivOpCards[oppCardNumber]);
+                ivOpCards[oppCardNumber].setTag(nextCard);
+            }
+        }, 8500);
+    }
+
 }
