@@ -6,44 +6,24 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 public class Classic extends AppCompatActivity {
 
-    private ImageView card1;
-    private ImageView card2;
-    private ImageView card3;
-    private ImageView card4;
-    private ImageView card5;
+    private ImageView[] ivMyCards = new ImageView[5];
+    private ImageView[] ivOpCards = new ImageView[5];
 
     private ImageView trumpCard;
-
-    private ImageView opCard1;
-    private ImageView opCard2;
-    private ImageView opCard3;
-    private ImageView opCard4;
-    private ImageView opCard5;
-
-    private ImageView overlapCard1;
-    private ImageView overlapCard2;
-    private ImageView overlapCard3;
-    private ImageView overlapCard4;
-    private ImageView overlapCard5;
 
     private ImageView myCardStack;
     private ImageView opCardStack;
@@ -61,6 +41,11 @@ public class Classic extends AppCompatActivity {
 
     private int myPointsCNT = 0;
     private int opPointsCNT = 0;
+    private int helperDuration = 0;
+    private boolean helperClickable = false;
+
+
+    final Handler handler = new Handler();
 
 
     @Override
@@ -102,20 +87,21 @@ public class Classic extends AppCompatActivity {
         handOut(opponentCards,5);   //Gegner bekommt Karten
         trump = handTrump();               //Trumpf wird bestimmt
         System.out.println(trump);
-
-        card1 = findViewById(R.id.myCard1);
-        card2 = findViewById(R.id.myCard2);
-        card3 = findViewById(R.id.myCard3);
-        card4 = findViewById(R.id.myCard4);
-        card5 = findViewById(R.id.myCard5);
+        
+        //Alles wird zugewiesen
+        ivMyCards[0] = findViewById(R.id.myCard1);
+        ivMyCards[1] = findViewById(R.id.myCard2);
+        ivMyCards[2] = findViewById(R.id.myCard3);
+        ivMyCards[3] = findViewById(R.id.myCard4);
+        ivMyCards[4] = findViewById(R.id.myCard5);
 
         trumpCard = findViewById(R.id.trumpCard);
 
-        opCard1 = findViewById(R.id.oponnentCard1);
-        opCard2 = findViewById(R.id.oponnentCard2);
-        opCard3 = findViewById(R.id.oponnentCard3);
-        opCard4 = findViewById(R.id.oponnentCard4);
-        opCard5 = findViewById(R.id.oponnentCard5);
+        ivOpCards[0] = findViewById(R.id.oponnentCard1);
+        ivOpCards[1] = findViewById(R.id.oponnentCard2);
+        ivOpCards[2] = findViewById(R.id.oponnentCard3);
+        ivOpCards[3] = findViewById(R.id.oponnentCard4);
+        ivOpCards[4] = findViewById(R.id.oponnentCard5);
 
         myCardStack = findViewById(R.id.myCardStack);
         myCardStack.setClickable(false);
@@ -124,56 +110,39 @@ public class Classic extends AppCompatActivity {
 
         myPoints = findViewById(R.id.myPoints);
         opPoints = findViewById(R.id.opPoints);
+        ///////
+        //Karte Bild zuweisen;
 
-        //Karte Bild zuweisen
-        assignImages(myCards.get(0), card1);
-        assignImages(myCards.get(1), card2);
-        assignImages(myCards.get(2), card3);
-        assignImages(myCards.get(3), card4);
-        assignImages(myCards.get(4), card5);
-
+        for (int i = 0; i < 5; i++) {
+            // Set image for my cards
+            assignImages(myCards.get(i),ivMyCards[i]);
+            // Set tag and Z-achsis of my cards
+            ivMyCards[i].setTag(myCards.get(i));
+            ivMyCards[i].setZ(9f);
+            // Set tag of op cards
+            ivOpCards[i].setTag(opponentCards.get(i));
+        }
+        // Set tag and image for trump card
         assignImages(trump, trumpCard);
-
-        //Tag setten
-        card1.setTag(myCards.get(0));
-        card2.setTag(myCards.get(1));
-        card3.setTag(myCards.get(2));
-        card4.setTag(myCards.get(3));
-        card5.setTag(myCards.get(4));
-
-        card1.setZ(9);
-        card2.setZ(9);
-        card3.setZ(9);
-        card4.setZ(9);
-        card5.setZ(9);
-
         trumpCard.setTag(trump);
-
-        opCard1.setTag(opponentCards.get(0));
-        opCard2.setTag(opponentCards.get(1));
-        opCard3.setTag(opponentCards.get(2));
-        opCard4.setTag(opponentCards.get(3));
-        opCard5.setTag(opponentCards.get(4));
 
         //Gegnerdeck ausgeben
         System.out.println("Gegnerkarten:");
         for (Card card: opponentCards){
             System.out.println(card);
         }
+
         ////////////////////////AUSTEIL ANIMATION///////////////////////////
 
-        handOutAnimation(card1, -2320, 560, 0);
-        handOutAnimation(card2, -1995, 560, 200);
-        handOutAnimation(card3, -1670, 560, 400);
+        handOutAnimation(ivMyCards[0], -2320, 560, 0);
+        handOutAnimation(ivMyCards[1], -1995, 560, 200);
+        handOutAnimation(ivMyCards[2], -1670, 560, 400);
 
         //WARTE EINE SEKUNDE
 
-        handOutAnimation(opCard1,-2320, -530, 1000);
-        handOutAnimation(overlapCard1, -2320, -530, 1000);
-        handOutAnimation(opCard2,-1995, -530, 1200);
-        handOutAnimation(overlapCard2,-1995, -530, 1200);
-        handOutAnimation(opCard3,-1670, -530, 1400);
-        handOutAnimation(overlapCard3,-1670, -530, 1400);
+        handOutAnimation(ivOpCards[0],-2320, -530, 1000);
+        handOutAnimation(ivOpCards[1],-1995, -530, 1200);
+        handOutAnimation(ivOpCards[2],-1670, -530, 1400);
 
 
         //WARTE EINE SEKUNDE
@@ -184,37 +153,32 @@ public class Classic extends AppCompatActivity {
 
         //WARTE EINE SEKUNDE
 
-        handOutAnimation(card4, -1345, 560, 3500);
-        handOutAnimation(card5, -1020, 560, 3700);
+        handOutAnimation(ivMyCards[3], -1345, 560, 3500);
+        handOutAnimation(ivMyCards[4], -1020, 560, 3700);
 
         //WARTE EINE SEKUNDE
 
-        handOutAnimation(opCard4,-1345, -530, 4500);
-        handOutAnimation(overlapCard4,-1345, -530, 4500);
-        handOutAnimation(opCard5,-1020, -530, 4700);
-        handOutAnimation(overlapCard5,-1020, -530, 4700);
+        handOutAnimation(ivOpCards[3],-1345, -530, 4500);
+        handOutAnimation(ivOpCards[4],-1020, -530, 4700);
 
         ////////////////////////////////////////////////////////////////////
 
-        card1.setOnClickListener(view -> cardClicked(card1));
-
-        card2.setOnClickListener(view -> cardClicked(card2));
-
-        card3.setOnClickListener(view -> cardClicked(card3));
-
-        card4.setOnClickListener(view -> cardClicked(card4));
-
-        card5.setOnClickListener(view -> cardClicked(card5));
+//
+//        ivMyCards[1].setOnClickListener(view -> cardClicked(ivMyCards[1]));
+//        ivMyCards[2].setOnClickListener(view -> cardClicked(ivMyCards[2]));
+//        ivMyCards[3].setOnClickListener(view -> cardClicked(ivMyCards[3]));
+//        ivMyCards[4].setOnClickListener(view -> cardClicked(ivMyCards[4]));
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            ivMyCards[i].setOnClickListener(view -> cardClicked(ivMyCards[finalI], finalI));
+        }
 
     }
 
-    public void cardClicked(ImageView card){
+    public void cardClicked(ImageView card, int i){
 
-//        card1.setClickable(false);
-//        card2.setClickable(false);
-//        card3.setClickable(false);
-//        card4.setClickable(false);
-//        card5.setClickable(false);
+//        setCardsClickable(false, 0);
+
 
         Card cardValue = (Card) card.getTag();
         System.out.println(cardValue);
@@ -298,7 +262,11 @@ public class Classic extends AppCompatActivity {
 
             opponentCards.remove(oppCardValue);
             myCards.remove(cardValue);
+
+//            setCardsClickable(true, 7000);
     }
+
+
 
     public void handOut(List<Card> cards, int number){
         for (int i = 0; i < number; i++) {
@@ -377,7 +345,6 @@ public class Classic extends AppCompatActivity {
 
     public ImageView randOppCard(String type){
 
-
                 List<Card> opponentCardsSameType = new ArrayList<>();
                 for (Card card:opponentCards) {
                     if (card.getType() == type){
@@ -395,55 +362,55 @@ public class Classic extends AppCompatActivity {
                 }
                 ImageView opCard = null;
                 helperCard = cardValue;
-                if (cardValue == (Card) opCard1.getTag()) {
-                    opCard1.postDelayed(new Runnable() {
+                if (cardValue == (Card) ivOpCards[0].getTag()) {
+                    ivOpCards[0].postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            handOutAnimation(opCard1, -1350, -0, 0);
-                            assignImages(helperCard, opCard1);
+                            handOutAnimation(ivOpCards[0], -1350, -0, 0);
+                            assignImages(helperCard, ivOpCards[0]);
                         }
                     }, 1500);
-                    opCard = opCard1;
+                    opCard = ivOpCards[0];
                 }
-                if (cardValue == (Card) opCard2.getTag()) {
-                    opCard2.postDelayed(new Runnable() {
+                if (cardValue == (Card) ivOpCards[1].getTag()) {
+                    ivOpCards[1].postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            handOutAnimation(opCard2, -1350, -0, 0);
-                            assignImages(helperCard, opCard2);
+                            handOutAnimation(ivOpCards[1], -1350, -0, 0);
+                            assignImages(helperCard, ivOpCards[1]);
                         }
                     }, 1500);
-                    opCard = opCard2;
+                    opCard = ivOpCards[1];
                 }
-                if (cardValue == (Card) opCard3.getTag()) {
-                    opCard3.postDelayed(new Runnable() {
+                if (cardValue == (Card) ivOpCards[2].getTag()) {
+                    ivOpCards[2].postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            handOutAnimation(opCard3, -1350, -0, 0);
-                            assignImages(helperCard, opCard3);
+                            handOutAnimation(ivOpCards[2], -1350, -0, 0);
+                            assignImages(helperCard, ivOpCards[2]);
                         }
                     }, 1500);
-                    opCard = opCard3;
+                    opCard = ivOpCards[2];
                 }
-                if (cardValue == (Card) opCard4.getTag()) {
-                    opCard4.postDelayed(new Runnable() {
+                if (cardValue == (Card) ivOpCards[3].getTag()) {
+                    ivOpCards[3].postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            handOutAnimation(opCard4, -1350, -0, 0);
-                            assignImages(helperCard, opCard4);
+                            handOutAnimation(ivOpCards[3], -1350, -0, 0);
+                            assignImages(helperCard, ivOpCards[3]);
                         }
                     }, 1500);
-                    opCard = opCard4;
+                    opCard = ivOpCards[3];
                 }
-                if (cardValue == (Card) opCard5.getTag()) {
-                    opCard5.postDelayed(new Runnable() {
+                if (cardValue == (Card) ivOpCards[4].getTag()) {
+                    ivOpCards[4].postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            handOutAnimation(opCard5, -1350, -0, 0);
-                            assignImages(helperCard, opCard5);
+                            handOutAnimation(ivOpCards[4], -1350, -0, 0);
+                            assignImages(helperCard, ivOpCards[4]);
                         }
                     }, 1500);
-                    opCard = opCard5;
+                    opCard = ivOpCards[4];
                 }
                 return opCard;
     }
@@ -461,7 +428,21 @@ public class Classic extends AppCompatActivity {
     }
 
     public void handoutNewCard(){
-
     }
 
+//    private void setCardsClickable(boolean clickable, int delay) {
+//        helperClickable = clickable;
+//        helperDuration = 5000;
+//
+//        card5.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                card1.setClickable(helperClickable);
+//                card2.setClickable(helperClickable);
+//                card3.setClickable(helperClickable);
+//                card4.setClickable(helperClickable);
+//                card5.setClickable(helperClickable);
+//            }
+//        },5000);
+//    }
 }
