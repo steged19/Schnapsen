@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,29 +21,28 @@ import java.util.Set;
 
 public class Classic extends AppCompatActivity {
 
-    private ImageView[] ivMyCards = new ImageView[5];
-    private ImageView[] ivOpCards = new ImageView[5];
+    private final ImageView[] ivMyCards = new ImageView[5];
+    private final ImageView[] ivOpCards = new ImageView[5];
 
     private ImageView trumpCard;
 
     private ImageView myCardStack;
     private ImageView opCardStack;
 
-    private List<Card> deckCards = new ArrayList<>();
-    private List<Card> myCards = new ArrayList<>();
-    private List<Card> opponentCards = new ArrayList<>();
+    private final List<Card> deckCards = new ArrayList<>();
+    private final List<Card> myCards = new ArrayList<>();
+    private final List<Card> opponentCards = new ArrayList<>();
     private Card trump;
     private Card helperCard;
+    private ImageView ivHelperCard;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     private TextView myPoints;
     private TextView opPoints;
 
     private int myPointsCNT = 0;
     private int opPointsCNT = 0;
-    private int helperDuration = 0;
-    private boolean helperClickable = false;
 
 
     final Handler handler = new Handler();
@@ -58,36 +58,54 @@ public class Classic extends AppCompatActivity {
 
         ///Deck wird erstellt
         //Deck deck = new Deck();
-        String type="";
+        String type = "";
         int v;
-        for (int i = 0; i<4; i++){
-            switch (i){
-                case 0: type = "Heart"; break;
-                case 1: type = "Bell"; break;
-                case 2: type = "Acorn"; break;
-                case 3: type = "Leave"; break;
+        for (int i = 0; i < 4; i++) {
+            switch (i) {
+                case 0:
+                    type = "Heart";
+                    break;
+                case 1:
+                    type = "Bell";
+                    break;
+                case 2:
+                    type = "Acorn";
+                    break;
+                case 3:
+                    type = "Leave";
+                    break;
             }
             for (int j = 0; j < 5; j++) {
-                v = j+1;
-                switch (j){
-                case 0: v=2; break;
-                case 1: v=3; break;
-                case 2: v=4; break;
-                case 3: v=10; break;
-                case 4: v=11; break;
+                v = j + 1;
+                switch (j) {
+                    case 0:
+                        v = 2;
+                        break;
+                    case 1:
+                        v = 3;
+                        break;
+                    case 2:
+                        v = 4;
+                        break;
+                    case 3:
+                        v = 10;
+                        break;
+                    case 4:
+                        v = 11;
+                        break;
                 }
 
-                deckCards.add(new Card(v,type));
+                deckCards.add(new Card(v, type));
             }
         }
         //////Karten werden gemischt und an beide Spieler ausgeteilt///////
 
         Collections.shuffle(deckCards);
         handOut(myCards, 5);        //Spieler bekommt Karten
-        handOut(opponentCards,5);   //Gegner bekommt Karten
+        handOut(opponentCards, 5);   //Gegner bekommt Karten
         trump = handTrump();               //Trumpf wird bestimmt
         System.out.println(trump);
-        
+
         //Alles wird zugewiesen
         ivMyCards[0] = findViewById(R.id.myCard1);
         ivMyCards[1] = findViewById(R.id.myCard2);
@@ -114,21 +132,21 @@ public class Classic extends AppCompatActivity {
         //Karte Bild zuweisen;
 
         for (int i = 0; i < 5; i++) {
-            // Set image for my cards
-            assignImages(myCards.get(i),ivMyCards[i]);
-            // Set tag and Z-achsis of my cards
+            assignImages(myCards.get(i), ivMyCards[i]);
             ivMyCards[i].setTag(myCards.get(i));
             ivMyCards[i].setZ(9f);
-            // Set tag of op cards
+
             ivOpCards[i].setTag(opponentCards.get(i));
         }
-        // Set tag and image for trump card
         assignImages(trump, trumpCard);
         trumpCard.setTag(trump);
 
+        opCardStack.setZ(10f);
+        myCardStack.setZ(10f);
+
         //Gegnerdeck ausgeben
         System.out.println("Gegnerkarten:");
-        for (Card card: opponentCards){
+        for (Card card : opponentCards) {
             System.out.println(card);
         }
 
@@ -140,9 +158,9 @@ public class Classic extends AppCompatActivity {
 
         //WARTE EINE SEKUNDE
 
-        handOutAnimation(ivOpCards[0],-2320, -530, 1000);
-        handOutAnimation(ivOpCards[1],-1995, -530, 1200);
-        handOutAnimation(ivOpCards[2],-1670, -530, 1400);
+        handOutAnimation(ivOpCards[0], -2320, -530, 1000);
+        handOutAnimation(ivOpCards[1], -1995, -530, 1200);
+        handOutAnimation(ivOpCards[2], -1670, -530, 1400);
 
 
         //WARTE EINE SEKUNDE
@@ -158,16 +176,12 @@ public class Classic extends AppCompatActivity {
 
         //WARTE EINE SEKUNDE
 
-        handOutAnimation(ivOpCards[3],-1345, -530, 4500);
-        handOutAnimation(ivOpCards[4],-1020, -530, 4700);
+        handOutAnimation(ivOpCards[3], -1345, -530, 4500);
+        handOutAnimation(ivOpCards[4], -1020, -530, 4700);
 
         ////////////////////////////////////////////////////////////////////
 
-//
-//        ivMyCards[1].setOnClickListener(view -> cardClicked(ivMyCards[1]));
-//        ivMyCards[2].setOnClickListener(view -> cardClicked(ivMyCards[2]));
-//        ivMyCards[3].setOnClickListener(view -> cardClicked(ivMyCards[3]));
-//        ivMyCards[4].setOnClickListener(view -> cardClicked(ivMyCards[4]));
+
         for (int i = 0; i < 5; i++) {
             int finalI = i;
             ivMyCards[i].setOnClickListener(view -> cardClicked(ivMyCards[finalI], finalI));
@@ -175,160 +189,151 @@ public class Classic extends AppCompatActivity {
 
     }
 
-    public void cardClicked(ImageView card, int i){
+    public void cardClicked(ImageView card, int cardNumber) {
 
-//        setCardsClickable(false, 0);
+        setCardsClickable(false, 0);
 
 
         Card cardValue = (Card) card.getTag();
-        System.out.println(cardValue);
-        handOutAnimation(card, -1000, 20, 0);
-
-        ImageView oppCard =  randOppCard(cardValue.getType());
+        ImageView oppCard = randOppCard(cardValue.getType());
         Card oppCardValue = (Card) oppCard.getTag();
 
+        handOutAnimation(card, -1000, 20, 0);
 
-        //myCards           - cardValue
-        //oponnentCards     - oppCardValue
-
-        //cardValue.getValue();
-
-        int oppValue = oppCardValue.getValue();
-        int myValue = cardValue.getValue();
-
-        if(cardValue.getType().equals(trump.getType())){
-            System.out.println("DES WOA MEI TRUMP OIDA");
+        if (cardValue.getType() == oppCardValue.getType()) {
+            if (cardValue.getValue() < oppCardValue.getValue()) {
+                roundLossAnimation(card, oppCard);
+                updateOppPoints(cardValue, oppCardValue);
+            } else {
+                roundWonAnimation(card, oppCard);
+                updateMyPoints(cardValue, oppCardValue);
+            }
+        } else {
+            if (oppCardValue.getType() == trump.getType()) {
+                roundLossAnimation(card, oppCard);
+                updateOppPoints(cardValue, oppCardValue);
+            } else {
+                roundWonAnimation(card, oppCard);
+                updateMyPoints(cardValue, oppCardValue);
+            }
         }
 
-        if(oppCardValue.getType().equals(trump.getType())){
-            System.out.println("DES WOA DA GEGNAS TRUMPF OIDA");
+        if (checkIfWin() == false) {
+            handoutNewCard();
+        } else {
+            checkIfWin();
         }
 
-        //WENN KARTE KLEINER ALS OPONENT CARD
-                if(cardValue.getValue() < oppCardValue.getValue() && cardValue.getType() == oppCardValue.getType()){
-                    handOutAnimation(card, -450, -500, 3500);
-                    card.animate().rotation(210f).setDuration(1500).setStartDelay(3500).start();
-                    handOutAnimation(oppCard, -450, -500, 3500);
-                    oppCard.animate().rotation(210f).setDuration(1500).setStartDelay(3500).start();
+        opponentCards.remove(oppCardValue);
+        myCards.remove(cardValue);
 
-                    opCardStack.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            opCardStack.setVisibility(View.VISIBLE);
-                            assignImages((Card) card.getTag(), opCardStack);
-                            opCardStack.setZ(100);
-                        }
-                    }, 5000);
-
-                    opPointsCNT += cardValue.getValue() + oppCardValue.getValue();
-                    opPoints.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            opPoints.setText(opPointsCNT +"");
-                        }
-                    }, 3000);
-            }
-            //WENN KARTE GRÖßER ALS OPONENT CARD
-            else{
-                    handOutAnimation(card, -400, 500, 3500);
-                    card.animate().rotation(150f).setDuration(1500).setStartDelay(3500).start();
-                    handOutAnimation(oppCard, -400, 500, 3500);
-                    oppCard.animate().rotation(150f).setDuration(1500).setStartDelay(3500).start();
-
-                    myCardStack.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            myCardStack.setVisibility(View.VISIBLE);
-                            assignImages((Card) card.getTag(), myCardStack);
-                            opCardStack.setZ(100);
-                        }
-                    }, 5000);
-
-                    myPointsCNT += cardValue.getValue() + oppCardValue.getValue();
-                    myPoints.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            myPoints.setText(myPointsCNT +"");
-                        }
-                    }, 3000);
-            }
-
-            if(checkIfWin() == false ){
-                handoutNewCard();
-            }
-            else{
-                checkIfWin();
-            }
-
-            opponentCards.remove(oppCardValue);
-            myCards.remove(cardValue);
-
-//            setCardsClickable(true, 7000);
+        setCardsClickable(true, 6000);
     }
 
 
-
-    public void handOut(List<Card> cards, int number){
+    public void handOut(List<Card> cards, int number) {
         for (int i = 0; i < number; i++) {
             cards.add(deckCards.get(0));
             deckCards.remove(0);
         }
     }
-    public Card handTrump(){
+
+    public Card handTrump() {
         Card trump = deckCards.get(0);
         deckCards.remove(0);
         return trump;
     }
 
-    public void assignImages(Card card, ImageView imageView){
-        switch (card.getType()){
+    public void assignImages(Card card, ImageView imageView) {
+        switch (card.getType()) {
 
-            case "Heart" :
-                switch (card.getValue()){
-                    case 2: imageView.setImageResource(R.drawable.herzbube); break;
-                    case 3: imageView.setImageResource(R.drawable.herzdame); break;
-                    case 4: imageView.setImageResource(R.drawable.herzkoenig); break;
-                    case 10: imageView.setImageResource(R.drawable.herzzehner); break;
-                    case 11: imageView.setImageResource(R.drawable.herzass); break;
+            case "Heart":
+                switch (card.getValue()) {
+                    case 2:
+                        imageView.setImageResource(R.drawable.herzbube);
+                        break;
+                    case 3:
+                        imageView.setImageResource(R.drawable.herzdame);
+                        break;
+                    case 4:
+                        imageView.setImageResource(R.drawable.herzkoenig);
+                        break;
+                    case 10:
+                        imageView.setImageResource(R.drawable.herzzehner);
+                        break;
+                    case 11:
+                        imageView.setImageResource(R.drawable.herzass);
+                        break;
                 }
                 break;
-            case "Acorn" :
-                switch (card.getValue()){
-                    case 2: imageView.setImageResource(R.drawable.kreuzbube); break;
-                    case 3: imageView.setImageResource(R.drawable.kreuzdame); break;
-                    case 4: imageView.setImageResource(R.drawable.kreuzkoenig); break;
-                    case 10: imageView.setImageResource(R.drawable.kreuzzehner); break;
-                    case 11: imageView.setImageResource(R.drawable.kreuzass); break;
+            case "Acorn":
+                switch (card.getValue()) {
+                    case 2:
+                        imageView.setImageResource(R.drawable.kreuzbube);
+                        break;
+                    case 3:
+                        imageView.setImageResource(R.drawable.kreuzdame);
+                        break;
+                    case 4:
+                        imageView.setImageResource(R.drawable.kreuzkoenig);
+                        break;
+                    case 10:
+                        imageView.setImageResource(R.drawable.kreuzzehner);
+                        break;
+                    case 11:
+                        imageView.setImageResource(R.drawable.kreuzass);
+                        break;
                 }
                 break;
-            case "Leave" :
-                switch (card.getValue()){
-                    case 2: imageView.setImageResource(R.drawable.picbube); break;
-                    case 3: imageView.setImageResource(R.drawable.picdame); break;
-                    case 4: imageView.setImageResource(R.drawable.pickoenig); break;
-                    case 10: imageView.setImageResource(R.drawable.piczehner); break;
-                    case 11: imageView.setImageResource(R.drawable.picass); break;
+            case "Leave":
+                switch (card.getValue()) {
+                    case 2:
+                        imageView.setImageResource(R.drawable.picbube);
+                        break;
+                    case 3:
+                        imageView.setImageResource(R.drawable.picdame);
+                        break;
+                    case 4:
+                        imageView.setImageResource(R.drawable.pickoenig);
+                        break;
+                    case 10:
+                        imageView.setImageResource(R.drawable.piczehner);
+                        break;
+                    case 11:
+                        imageView.setImageResource(R.drawable.picass);
+                        break;
                 }
                 break;
-            case "Bell" :
-                switch (card.getValue()){
-                    case 2: imageView.setImageResource(R.drawable.karobube); break;
-                    case 3: imageView.setImageResource(R.drawable.karodame); break;
-                    case 4: imageView.setImageResource(R.drawable.karokoenig); break;
-                    case 10: imageView.setImageResource(R.drawable.karozehner); break;
-                    case 11: imageView.setImageResource(R.drawable.karoass); break;
+            case "Bell":
+                switch (card.getValue()) {
+                    case 2:
+                        imageView.setImageResource(R.drawable.karobube);
+                        break;
+                    case 3:
+                        imageView.setImageResource(R.drawable.karodame);
+                        break;
+                    case 4:
+                        imageView.setImageResource(R.drawable.karokoenig);
+                        break;
+                    case 10:
+                        imageView.setImageResource(R.drawable.karozehner);
+                        break;
+                    case 11:
+                        imageView.setImageResource(R.drawable.karoass);
+                        break;
                 }
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
     //FUNKTION FÜR ANIMATION FÜRS AUSTEILEN
 
-    public void handOutAnimation(View view, int numberX, int numberY, int delay){
+    public void handOutAnimation(View view, int numberX, int numberY, int delay) {
 
-        ObjectAnimator xAnimation = ObjectAnimator.ofFloat(view,"translationX", numberX);
-        ObjectAnimator yAnimation = ObjectAnimator.ofFloat(view,"translationY", numberY);
+        ObjectAnimator xAnimation = ObjectAnimator.ofFloat(view, "translationX", numberX);
+        ObjectAnimator yAnimation = ObjectAnimator.ofFloat(view, "translationY", numberY);
 
         yAnimation.setDuration(1500).setStartDelay(delay);
         xAnimation.setDuration(1500).setStartDelay(delay);
@@ -343,106 +348,154 @@ public class Classic extends AppCompatActivity {
         animatorSet.start();
     }
 
-    public ImageView randOppCard(String type){
+    public ImageView randOppCard(String type) {
 
-                List<Card> opponentCardsSameType = new ArrayList<>();
-                for (Card card:opponentCards) {
-                    if (card.getType() == type){
-                        opponentCardsSameType.add(card);
-                    }
+
+        List<Card> opponentCardsSameType = new ArrayList<>();
+        for (Card card:opponentCards) {
+            if (card.getType() == type){
+                opponentCardsSameType.add(card);
+            }
+        }
+        Card cardValue = null;
+        if (opponentCardsSameType.size() != 0){
+            int cardNumber = random.nextInt(opponentCardsSameType.size());
+            cardValue = opponentCardsSameType.get(cardNumber);
+        }
+        else {
+            int cardNumber = random.nextInt(opponentCards.size());
+            cardValue =  opponentCards.get(cardNumber);
+        }
+        ImageView opCard = null;
+        helperCard = cardValue;
+        if (cardValue == (Card) ivOpCards[0].getTag()) {
+            ivOpCards[0].postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    handOutAnimation(ivOpCards[0], -1350, -0, 0);
+                    assignImages(helperCard, ivOpCards[0]);
                 }
-                Card cardValue = null;
-                if (opponentCardsSameType.size() != 0){
-                    int cardNumber = random.nextInt(opponentCardsSameType.size());
-                    cardValue = opponentCardsSameType.get(cardNumber);
+            }, 1500);
+            opCard = ivOpCards[0];
+        }
+        if (cardValue == (Card) ivOpCards[1].getTag()) {
+            ivOpCards[1].postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    handOutAnimation(ivOpCards[1], -1350, -0, 0);
+                    assignImages(helperCard, ivOpCards[1]);
                 }
-                else {
-                    int cardNumber = random.nextInt(opponentCards.size());
-                    cardValue =  opponentCards.get(cardNumber);
+            }, 1500);
+            opCard = ivOpCards[1];
+        }
+        if (cardValue == (Card) ivOpCards[2].getTag()) {
+            ivOpCards[2].postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    handOutAnimation(ivOpCards[2], -1350, -0, 0);
+                    assignImages(helperCard, ivOpCards[2]);
                 }
-                ImageView opCard = null;
-                helperCard = cardValue;
-                if (cardValue == (Card) ivOpCards[0].getTag()) {
-                    ivOpCards[0].postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            handOutAnimation(ivOpCards[0], -1350, -0, 0);
-                            assignImages(helperCard, ivOpCards[0]);
-                        }
-                    }, 1500);
-                    opCard = ivOpCards[0];
+            }, 1500);
+            opCard = ivOpCards[2];
+        }
+        if (cardValue == (Card) ivOpCards[3].getTag()) {
+            ivOpCards[3].postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    handOutAnimation(ivOpCards[3], -1350, -0, 0);
+                    assignImages(helperCard, ivOpCards[3]);
                 }
-                if (cardValue == (Card) ivOpCards[1].getTag()) {
-                    ivOpCards[1].postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            handOutAnimation(ivOpCards[1], -1350, -0, 0);
-                            assignImages(helperCard, ivOpCards[1]);
-                        }
-                    }, 1500);
-                    opCard = ivOpCards[1];
+            }, 1500);
+            opCard = ivOpCards[3];
+        }
+        if (cardValue == (Card) ivOpCards[4].getTag()) {
+            ivOpCards[4].postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    handOutAnimation(ivOpCards[4], -1350, -0, 0);
+                    assignImages(helperCard, ivOpCards[4]);
                 }
-                if (cardValue == (Card) ivOpCards[2].getTag()) {
-                    ivOpCards[2].postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            handOutAnimation(ivOpCards[2], -1350, -0, 0);
-                            assignImages(helperCard, ivOpCards[2]);
-                        }
-                    }, 1500);
-                    opCard = ivOpCards[2];
-                }
-                if (cardValue == (Card) ivOpCards[3].getTag()) {
-                    ivOpCards[3].postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            handOutAnimation(ivOpCards[3], -1350, -0, 0);
-                            assignImages(helperCard, ivOpCards[3]);
-                        }
-                    }, 1500);
-                    opCard = ivOpCards[3];
-                }
-                if (cardValue == (Card) ivOpCards[4].getTag()) {
-                    ivOpCards[4].postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            handOutAnimation(ivOpCards[4], -1350, -0, 0);
-                            assignImages(helperCard, ivOpCards[4]);
-                        }
-                    }, 1500);
-                    opCard = ivOpCards[4];
-                }
-                return opCard;
+            }, 1500);
+            opCard = ivOpCards[4];
+        }
+        return opCard;
     }
 
-    public boolean checkIfWin(){
-        if(myPointsCNT >= 66){
+    public boolean checkIfWin() {
+        if (myPointsCNT >= 66) {
             System.out.println("Ich gewinne");
             return true;
         }
-        if(opPointsCNT >= 66){
+        if (opPointsCNT >= 66) {
             System.out.println("Gegner gewinnt");
             return true;
         }
         return false;
     }
 
-    public void handoutNewCard(){
+    public void handoutNewCard() {
     }
 
-//    private void setCardsClickable(boolean clickable, int delay) {
-//        helperClickable = clickable;
-//        helperDuration = 5000;
-//
-//        card5.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                card1.setClickable(helperClickable);
-//                card2.setClickable(helperClickable);
-//                card3.setClickable(helperClickable);
-//                card4.setClickable(helperClickable);
-//                card5.setClickable(helperClickable);
-//            }
-//        },5000);
-//    }
+    private void setCardsClickable(boolean clickable, int delay) {
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 5; i++) {
+                    ivMyCards[i].setClickable(clickable);
+                }
+            }
+        }, 0 + delay);
+    }
+
+    private void roundLossAnimation(ImageView card, ImageView oppCard) {
+        handOutAnimation(card, -450, -500, 3500);
+        card.animate().rotation(210f).setDuration(1500).setStartDelay(3500).start();
+        handOutAnimation(oppCard, -450, -500, 3500);
+        oppCard.animate().rotation(210f).setDuration(1500).setStartDelay(3500).start();
+
+        opCardStack.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                opCardStack.setVisibility(View.VISIBLE);
+                assignImages((Card) card.getTag(), opCardStack);
+            }
+        }, 5000);
+    }
+
+    private void roundWonAnimation(ImageView card, ImageView oppCard) {
+        handOutAnimation(card, -400, 500, 3500);
+        card.animate().rotation(150f).setDuration(1500).setStartDelay(3500).start();
+        handOutAnimation(oppCard, -400, 500, 3500);
+        oppCard.animate().rotation(150f).setDuration(1500).setStartDelay(3500).start();
+
+        myCardStack.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myCardStack.setVisibility(View.VISIBLE);
+                assignImages((Card) card.getTag(), myCardStack);
+            }
+        }, 5000);
+    }
+
+
+    private void updateOppPoints(Card cardValue, Card oppCardValue) {
+        opPointsCNT += cardValue.getValue() + oppCardValue.getValue();
+        opPoints.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                opPoints.setText(opPointsCNT + "");
+            }
+        }, 3000);
+    }
+
+    private void updateMyPoints(Card cardValue, Card oppCardValue) {
+        myPointsCNT += cardValue.getValue() + oppCardValue.getValue();
+        myPoints.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myPoints.setText(myPointsCNT + "");
+            }
+        }, 3000);
+    }
 }
