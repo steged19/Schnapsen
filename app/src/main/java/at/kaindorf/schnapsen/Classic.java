@@ -44,9 +44,11 @@ public class Classic extends AppCompatActivity {
     private int myPointsCNT = 0;
     private int opPointsCNT = 0;
 
+    private ImageView stackCard1;
+    private ImageView stackCard2;
+    private ImageView stackCard3;
 
     final Handler handler = new Handler();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,14 @@ public class Classic extends AppCompatActivity {
         ivMyCards[3] = findViewById(R.id.myCard4);
         ivMyCards[4] = findViewById(R.id.myCard5);
 
+        stackCard1 = findViewById(R.id.stackCard1);
+        stackCard2 = findViewById(R.id.stackCard2);
+        stackCard3 = findViewById(R.id.stackCard3);
+
+        stackCard1.setZ(12f);
+        stackCard2.setZ(12f);
+        stackCard3.setZ(12f);
+
         trumpCard = findViewById(R.id.trumpCard);
 
         ivOpCards[0] = findViewById(R.id.oponnentCard1);
@@ -134,7 +144,7 @@ public class Classic extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             assignImages(myCards.get(i), ivMyCards[i]);
             ivMyCards[i].setTag(myCards.get(i));
-            ivMyCards[i].setZ(9f);
+            ivMyCards[i].setZ(11f);
 
             ivOpCards[i].setTag(opponentCards.get(i));
         }
@@ -509,7 +519,6 @@ public class Classic extends AppCompatActivity {
         myCard.postDelayed(new Runnable() {
             @Override
             public void run() {
-                myCard.animate().rotation(0).setDuration(0).start();
                 myCard.setVisibility(View.INVISIBLE);
             }
         }, 5000);
@@ -517,7 +526,6 @@ public class Classic extends AppCompatActivity {
         opCard.postDelayed(new Runnable() {
             @Override
             public void run() {
-                opCard.animate().rotation(0).setDuration(0).start();
                 opCard.setVisibility(View.INVISIBLE);
             }
         }, 5000);
@@ -547,24 +555,32 @@ public class Classic extends AppCompatActivity {
             case 4: verschiebungOppCard = -1020; break;
         }
 
-        handOutAnimation(myCard, verschiebungMyCard, 560, 8500);
-        handOutAnimation(opCard, verschiebungOppCard, -536, 8500);
+        handOutAnimation(myCard, verschiebungMyCard, 560, 6000);
+        handOutAnimation(opCard, verschiebungOppCard, -536, 6000);
 
         myCard.postDelayed(new Runnable() {
             @Override
             public void run() {
                 myCard.setVisibility(View.VISIBLE);
+
+                myCard.animate().rotation(0).setDuration(1000).setStartDelay(0).start();
+
                 Card nextCard = deckCards.get(0);
                 handOut(myCards, 1);
                 assignImages(nextCard, ivMyCards[myCardNumber]);
                 ivMyCards[myCardNumber].setTag(nextCard);
+//                myCard.animate().rotation(-30).setDuration(1500).setStartDelay(3000).start();
+//                opCard.animate().rotation(30).setDuration(1500).setStartDelay(3000).start();
             }
-        }, 8500);
+        }, 6000);
 
         opCard.postDelayed(new Runnable() {
             @Override
             public void run() {
                 opCard.setVisibility(View.VISIBLE);
+
+                opCard.animate().rotation(0).setDuration(1000).setStartDelay(0).start();
+
                 Card nextCard = deckCards.get(0);
                 try {
                     handOut(opponentCards,1);
@@ -576,7 +592,7 @@ public class Classic extends AppCompatActivity {
                 //assignImages(nextCard, ivOpCards[oppCardNumber]);
                 ivOpCards[oppCardNumber].setTag(nextCard);
             }
-        }, 8500);
+        }, 6000);
     }
 
 }
