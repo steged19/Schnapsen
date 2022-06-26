@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         playIntro();
 
+        final MediaPlayer playerClick = MediaPlayer.create(this, R.raw.click);
+
         //////////////----BACKGROUND----///////////////
         /*RelativeLayout relativeLayout = findViewById(R.id.mainLayout);
         AnimationDrawable animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
@@ -104,7 +106,15 @@ public class MainActivity extends AppCompatActivity {
         ImageButton sound = findViewById(R.id.sound);
 
         player1 = MediaPlayer.create(this, R.raw.backgroundmusic);
-        player1.start();
+
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                player1.start();
+            }
+        }, 4000);
 
         sound.setOnClickListener(new View.OnClickListener() {
 
@@ -122,31 +132,31 @@ public class MainActivity extends AppCompatActivity {
                 if (soundCheck == true) {
                     System.out.println("SOUND AN");
                     player1.start();
+                    playerClick.start();
                 } else {
                     System.out.println("SOUND AUS");
                     player1.pause();
-
+                    playerClick.start();
                 }
             }
         });
 
         ///////////////////////////////////////////////////////////
 
-        final MediaPlayer playerKlassisch = MediaPlayer.create(this, R.raw.klassisch);
         ivKlassisch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                playerClick.start();
+
                 Intent classic = new Intent(MainActivity.this, Classic.class);
                 startActivity(classic);
-                playerKlassisch.start();
             }
         });
 
-        final MediaPlayer playerBlitz = MediaPlayer.create(this, R.raw.blitzschnapsen);
         ivBlitz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playerBlitz.start();
+                playerClick.start();
 
                 Intent classic = new Intent(MainActivity.this, Blitz.class);
                 startActivity(classic);

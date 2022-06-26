@@ -258,14 +258,12 @@ public class Classic extends AppCompatActivity {
 
         if (checkIfWin() == false) {
             handoutNewCard(card, oppCard, cardNumber, oppCardNumber);
-        } else {
-            checkIfWin();
         }
 
         opponentCards.remove(oppCardValue);
         myCards.remove(cardValue);
 
-        setCardsClickable(true, 8000);
+        setCardsClickable(true, 6500);
     }
 
 
