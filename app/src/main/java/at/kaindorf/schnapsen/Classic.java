@@ -255,7 +255,7 @@ public class Classic extends AppCompatActivity {
                 updateMyPoints(cardValue, oppCardValue);
             }
         }
-
+        checkIfWin();
         if (checkIfWin() == false) {
             handoutNewCard(card, oppCard, cardNumber, oppCardNumber);
         }
@@ -461,16 +461,19 @@ public class Classic extends AppCompatActivity {
     }
 
     public boolean checkIfWin() {
-        if (myPointsCNT >= 66) {
-            System.out.println("Ich gewinne");
-            openWinScreen();
-            return true;
+        handler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            if (myPointsCNT >= 66) {
+                System.out.println("Ich gewinne");
+                openWinScreen();
+            }
+            if (opPointsCNT >= 66) {
+                System.out.println("Gegner gewinnt");
+                openLossScreen();
+            }
         }
-        if (opPointsCNT >= 66) {
-            System.out.println("Gegner gewinnt");
-            openLossScreen();
-            return true;
-        }
+    }, 8500);
         return false;
     }
 
