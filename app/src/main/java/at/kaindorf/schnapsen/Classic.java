@@ -255,7 +255,7 @@ public class Classic extends AppCompatActivity {
                 updateMyPoints(cardValue, oppCardValue);
             }
         }
-        checkIfWin();
+
         if (checkIfWin() == false) {
             handoutNewCard(card, oppCard, cardNumber, oppCardNumber);
         }
@@ -473,7 +473,7 @@ public class Classic extends AppCompatActivity {
                 openLossScreen();
             }
         }
-    }, 8500);
+    }, 5000);
         return false;
     }
 
