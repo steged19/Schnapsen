@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -200,7 +203,27 @@ public class Classic extends AppCompatActivity {
             int finalI = i;
             ivMyCards[i].setOnClickListener(view -> cardClicked(ivMyCards[finalI], finalI));
         }
+        trumpCard.setOnClickListener(view -> trumpSwap());
+    }
 
+
+    private void trumpSwap() {
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            if (myCards.get(i).getType() == trump.getType() && myCards.get(i).getValue() == 2){
+                assignImages(myCards.get(i), trumpCard);
+                assignImages(trump, ivMyCards[i]);
+                Card helper = myCards.get(i);
+                myCards.set(i, trump);
+                trump = helper;
+                ivMyCards[i].setTag(myCards.get(i));
+                trumpCard.setTag(trump);
+
+                trumpCard.animate().rotation(630).setDuration(1000).setStartDelay(0).start();
+                ivMyCards[i].animate().rotation(720).setDuration(1000).setStartDelay(0).start();
+
+            }
+        }
     }
 
     public void cardClicked(ImageView card, int cardNumber) {
@@ -242,7 +265,7 @@ public class Classic extends AppCompatActivity {
         opponentCards.remove(oppCardValue);
         myCards.remove(cardValue);
 
-        setCardsClickable(true, 0);
+        setCardsClickable(true, 8000);
     }
 
 
@@ -592,6 +615,7 @@ public class Classic extends AppCompatActivity {
                         ivOpCards[oppCardNumber].setTag(nextCard);
                     }
                     else{
+                        trumpCard.setClickable(false);
                         deckNotEmpty = false;
                         stackCard1.setVisibility(View.INVISIBLE);
                         stackCard2.setVisibility(View.INVISIBLE);
@@ -600,16 +624,15 @@ public class Classic extends AppCompatActivity {
                         assignImages(trump ,opCard);
 
                         handOutAnimation(opCard, -223, 30, 0);
-                        opCard.animate().rotation(90f).setDuration(0).setStartDelay(0).start();
 
-                        opCard.animate().rotation(90f).setDuration(1500).setStartDelay(3000).start();
+                        opCard.animate().rotation(720f).setDuration(2000).setStartDelay(000).start();
 
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 opCard.setVisibility(View.VISIBLE);
                                 trumpCard.setVisibility(View.INVISIBLE);
-                                handOutAnimation(opCard, verschiebungOppCard, -536, 0);
+                                handOutAnimation(opCard, verschiebungOppCard, -536, 0);;
                             }
                         }, 1500);
                     }
